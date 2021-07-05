@@ -2,6 +2,9 @@
 #define ADRESSMANAGER_HPP
 
 #include <QFile>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QMap>
 #include <QObject>
 #include <QPair>

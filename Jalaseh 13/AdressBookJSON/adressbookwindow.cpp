@@ -57,6 +57,7 @@ AdressBookWindow::AdressBookWindow(QWidget *parent) : QMainWindow(parent) {
   connect(NextButton, SIGNAL(clicked()), this, SLOT(PreviousButtonPressed()));
   showCurrent();
 }
+
 AdressBookWindow *AdressBookWindow::getInstance() {
   if (Instance == nullptr) {
     Instance = new AdressBookWindow();
@@ -159,14 +160,14 @@ void AdressBookWindow::FindButtonPressed(void) {
   }
 }
 void AdressBookWindow::ImportButtonPressed(void) {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, "Open PhoneBook", "./", "PhoneBook File (*.phonebook)");
+  QString fileName = QFileDialog::getOpenFileName(this, "Open PhoneBook", "./",
+                                                  "JSON File (*.json)");
   manager->importFromFile(fileName);
   showCurrent();
 }
 void AdressBookWindow::ExportButtonPressed(void) {
-  QString fileName = QFileDialog::getSaveFileName(
-      this, "Save File", "./", "PhoneBook File (*.phonebook)");
+  QString fileName = QFileDialog::getSaveFileName(this, "Save File", "./",
+                                                  "JSON File (*.json)");
   manager->exportToFile(fileName);
 }
 void AdressBookWindow::PreviousButtonPressed(void) {

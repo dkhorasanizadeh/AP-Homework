@@ -11,7 +11,6 @@
 #include <QPushButton>
 #include <QTextEdit>
 #include <QTextStream>
-#include <QtDebug>
 
 #include "adressmanager.hpp"
 

@@ -2,7 +2,7 @@
 AdressManager *AdressManager::instance = nullptr;
 AdressManager::AdressManager(QObject *parent) : QObject(parent) {
   Iterator = Adresses.cbegin();
-  importFromFile("./data.phonebook");
+  importFromFile("./data.json");
 }
 
 AdressManager *AdressManager::getInstance() {
@@ -85,12 +85,19 @@ void AdressManager::exportToFile(QString fileName) {
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
     return;
   }
-  QTextStream out = QTextStream(&file);
   QMap<QString, QString>::const_iterator current = Adresses.cbegin();
+  QJsonArray adresses;
   while (current != Adresses.cend()) {
-    out << "{" << current.key() << ":" << current.value() << "}\n";
+    QJsonObject adress;
+    adress["name"] = current.key();
+    adress["adress"] = current.value();
+    adresses.append(adress);
     current++;
   }
+  QJsonObject json;
+  json["adresses"] = adresses;
+  QJsonDocument saveJson(json);
+  file.write(saveJson.toJson());
   file.close();
 }
 
@@ -99,17 +106,12 @@ void AdressManager::importFromFile(QString fileName) {
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     return;
   }
-  QTextStream in = QTextStream(&file);
+  QJsonArray adresses =
+      QJsonDocument::fromJson(file.readAll()).object()["adresses"].toArray();
   Adresses.clear();
-  QRegularExpression re("{([\\w\\d\\s]*):([\\w\\d\\s]*)}");
-  re.setPatternOptions(QRegularExpression::MultilineOption);
-  QString text = in.readAll();
-  QRegularExpressionMatchIterator reIterator = re.globalMatch(text);
-  while (reIterator.hasNext()) {
-    QRegularExpressionMatch match = reIterator.next();
-    QString name = match.captured(1);
-    QString adress = match.captured(2);
-    addAdress(name, adress);
+  foreach (QJsonValue value, adresses) {
+    QJsonObject adress = value.toObject();
+    addAdress(adress["name"].toString(), adress["adress"].toString());
   }
   previousAdress();
   file.close();
