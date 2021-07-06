@@ -1,15 +1,14 @@
-﻿#include <iostream>
-#include <cassert>
+﻿#include <cassert>
+#include <iostream>
 using namespace std;
 
-int main(void)
-{
-	int a;
-	char *x;
-	x = (char *)&a;
-	a = 512;
-	x[0] = 1;
-	assert(a == 513);
-	cout << a;
-	return 0;
+int main(void) {
+  int a;
+  char *x;
+  x = (char *)&a;
+  a = 512;
+  x[0] = 1;
+  assert(a == 513);
+  cout << a;
+  return 0;
 }

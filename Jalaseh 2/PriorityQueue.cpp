@@ -8,11 +8,10 @@ Date    : 01/Mar/2021
 */
 #include <iostream>
 using namespace std;
-struct node
-{
-    int data;
-    int priority;
-    node *next;
+struct node {
+  int data;
+  int priority;
+  node *next;
 };
 node *HEAD = NULL;
 int QUEUE_SIZE = 0;
@@ -29,238 +28,180 @@ void dequeuePriorityInterface(void);
 void dequeueInterface(void);
 void deleteItemAtIndex(int index);
 bool getCommand(void);
-int main(void)
-{
-    while (getCommand())
-        ;
-    return 0;
+int main(void) {
+  while (getCommand())
+    ;
+  return 0;
 }
-node *newNode(int data, int priority)
-{
-    node *temp = new node;
-    temp->next = NULL;
-    temp->data = data;
-    temp->priority = priority;
-    return temp;
+node *newNode(int data, int priority) {
+  node *temp = new node;
+  temp->next = NULL;
+  temp->data = data;
+  temp->priority = priority;
+  return temp;
 }
-bool enqueue(int data, int priority)
-{
-    node *temp = newNode(data, priority);
-    node *cursor = HEAD;
-    bool flag = false;
-    if (isEmpty())
-    {
-        HEAD = newNode(data, priority);
-        QUEUE_SIZE++;
-        return true;
-    }
-    else if (!isFull())
-    {
-        if (cursor->priority > priority)
-        {
-            temp->next = HEAD;
-            HEAD = temp;
-            QUEUE_SIZE++;
-            return true;
-        }
-        else
-        {
-            while (cursor->next != NULL && cursor->next->priority <= priority)
-            {
-                cursor = cursor->next;
-            }
-            temp->next = cursor->next;
-            cursor->next = temp;
-            QUEUE_SIZE++;
-            return true;
-        }
-    }
-    else
-    {
-        return false;
-    }
-}
-bool dequeue(void)
-{
-    if (!isEmpty())
-    {
-        node *cursor = HEAD;
-        if (QUEUE_SIZE != 1)
-        {
-            while (cursor->next->next != NULL)
-            {
-                cursor = cursor->next;
-            }
-            delete cursor->next;
-            cursor->next = NULL;
-            QUEUE_SIZE--;
-            return true;
-        }
-        else
-        {
-            delete cursor;
-            HEAD = NULL;
-            QUEUE_SIZE--;
-            return true;
-        }
-    }
-    else
-    {
-        return false;
-    }
-}
-bool isFull(void)
-{
-    return QUEUE_SIZE == 10;
-}
-bool isEmpty(void)
-{
-    return QUEUE_SIZE == 0;
-}
-void removePriority(int priority)
-{
-    node *cursor = HEAD;
-    int index = 0;
-    while (cursor->priority != priority && cursor->next != NULL)
-    {
+bool enqueue(int data, int priority) {
+  node *temp = newNode(data, priority);
+  node *cursor = HEAD;
+  bool flag = false;
+  if (isEmpty()) {
+    HEAD = newNode(data, priority);
+    QUEUE_SIZE++;
+    return true;
+  } else if (!isFull()) {
+    if (cursor->priority > priority) {
+      temp->next = HEAD;
+      HEAD = temp;
+      QUEUE_SIZE++;
+      return true;
+    } else {
+      while (cursor->next != NULL && cursor->next->priority <= priority) {
         cursor = cursor->next;
-        index++;
+      }
+      temp->next = cursor->next;
+      cursor->next = temp;
+      QUEUE_SIZE++;
+      return true;
     }
-    while (cursor != NULL && cursor->priority == priority)
-    {
+  } else {
+    return false;
+  }
+}
+bool dequeue(void) {
+  if (!isEmpty()) {
+    node *cursor = HEAD;
+    if (QUEUE_SIZE != 1) {
+      while (cursor->next->next != NULL) {
         cursor = cursor->next;
-        deleteItemAtIndex(index);
+      }
+      delete cursor->next;
+      cursor->next = NULL;
+      QUEUE_SIZE--;
+      return true;
+    } else {
+      delete cursor;
+      HEAD = NULL;
+      QUEUE_SIZE--;
+      return true;
     }
+  } else {
+    return false;
+  }
 }
-void printQueue(void)
-{
-    if (!isEmpty())
-    {
-        node *cursor = HEAD;
-        cout << "Data:Priority" << endl;
-        while (cursor != NULL)
-        {
-            cout << cursor->data << ":" << cursor->priority << endl;
-            cursor = cursor->next;
-        }
-    }
-    else
-    {
-        cout << "Queue is empty." << endl;
-    }
+bool isFull(void) { return QUEUE_SIZE == 10; }
+bool isEmpty(void) { return QUEUE_SIZE == 0; }
+void removePriority(int priority) {
+  node *cursor = HEAD;
+  int index = 0;
+  while (cursor->priority != priority && cursor->next != NULL) {
+    cursor = cursor->next;
+    index++;
+  }
+  while (cursor != NULL && cursor->priority == priority) {
+    cursor = cursor->next;
+    deleteItemAtIndex(index);
+  }
 }
-void enQueueInterface(void)
-{
-    int data, priority;
-    cout << "Please enter data and priority of item:" << endl;
-    cin >> data >> priority;
-    if (enqueue(data, priority))
-    {
-        cout << "Item added successfully" << endl;
+void printQueue(void) {
+  if (!isEmpty()) {
+    node *cursor = HEAD;
+    cout << "Data:Priority" << endl;
+    while (cursor != NULL) {
+      cout << cursor->data << ":" << cursor->priority << endl;
+      cursor = cursor->next;
     }
-    else
-    {
-        cout << "Queue is full." << endl;
-    }
+  } else {
+    cout << "Queue is empty." << endl;
+  }
 }
-void queueSize(void)
-{
-    if (!isEmpty())
-    {
-        cout << "Queue Size: " << QUEUE_SIZE << endl;
-    }
-    else
-    {
-        cout << "Queue is Empty" << endl;
-    }
+void enQueueInterface(void) {
+  int data, priority;
+  cout << "Please enter data and priority of item:" << endl;
+  cin >> data >> priority;
+  if (enqueue(data, priority)) {
+    cout << "Item added successfully" << endl;
+  } else {
+    cout << "Queue is full." << endl;
+  }
 }
-void dequeuePriorityInterface(void)
-{
-    int priority;
-    cout << "Please enter the priority that you want to dequeue:" << endl;
-    cin >> priority;
-    removePriority(priority);
-    cout << "Priority dequeued successfully." << endl;
+void queueSize(void) {
+  if (!isEmpty()) {
+    cout << "Queue Size: " << QUEUE_SIZE << endl;
+  } else {
+    cout << "Queue is Empty" << endl;
+  }
 }
-void dequeueInterface(void)
-{
-    if (dequeue())
-    {
-        cout << "Last item Removed successfully." << endl;
-    }
-    else
-    {
-        cout << "Queue is empty." << endl;
-    }
+void dequeuePriorityInterface(void) {
+  int priority;
+  cout << "Please enter the priority that you want to dequeue:" << endl;
+  cin >> priority;
+  removePriority(priority);
+  cout << "Priority dequeued successfully." << endl;
 }
-void deleteItemAtIndex(int index)
-{
-    if (HEAD == NULL)
-    {
-        return;
-    }
-    node *firstTempPointer = HEAD, *secondTempPointer;
-    int counter = 0;
-    while (firstTempPointer->next != NULL && counter + 1 < index)
-    {
-        firstTempPointer = firstTempPointer->next;
-        counter++;
-    }
-    if (index != 0)
-    {
-        struct node *secondTempPointer;
-        secondTempPointer = firstTempPointer->next;
-        if (secondTempPointer != NULL)
-        {
-            firstTempPointer->next = firstTempPointer->next->next;
-            delete secondTempPointer;
-        }
-        else
-        {
-            firstTempPointer->next = NULL;
-        }
-    }
-    else
-    {
-        HEAD = firstTempPointer->next;
-        delete firstTempPointer;
-    }
-    QUEUE_SIZE--;
+void dequeueInterface(void) {
+  if (dequeue()) {
+    cout << "Last item Removed successfully." << endl;
+  } else {
+    cout << "Queue is empty." << endl;
+  }
 }
-bool getCommand(void)
-{
-    bool run = true;
-    int choice;
-    cout << "1. Enqueue Item" << endl
-         << "2. Dequeue Item" << endl
-         << "3. Print Queue" << endl
-         << "4. Queue Size" << endl
-         << "5. Dequeue Priority" << endl
-         << "6. Exit" << endl;
-    cin >> choice;
-    switch (choice)
-    {
+void deleteItemAtIndex(int index) {
+  if (HEAD == NULL) {
+    return;
+  }
+  node *firstTempPointer = HEAD, *secondTempPointer;
+  int counter = 0;
+  while (firstTempPointer->next != NULL && counter + 1 < index) {
+    firstTempPointer = firstTempPointer->next;
+    counter++;
+  }
+  if (index != 0) {
+    struct node *secondTempPointer;
+    secondTempPointer = firstTempPointer->next;
+    if (secondTempPointer != NULL) {
+      firstTempPointer->next = firstTempPointer->next->next;
+      delete secondTempPointer;
+    } else {
+      firstTempPointer->next = NULL;
+    }
+  } else {
+    HEAD = firstTempPointer->next;
+    delete firstTempPointer;
+  }
+  QUEUE_SIZE--;
+}
+bool getCommand(void) {
+  bool run = true;
+  int choice;
+  cout << "1. Enqueue Item" << endl
+       << "2. Dequeue Item" << endl
+       << "3. Print Queue" << endl
+       << "4. Queue Size" << endl
+       << "5. Dequeue Priority" << endl
+       << "6. Exit" << endl;
+  cin >> choice;
+  switch (choice) {
     case 1:
-        enQueueInterface();
-        break;
+      enQueueInterface();
+      break;
     case 2:
-        dequeueInterface();
-        break;
+      dequeueInterface();
+      break;
     case 3:
-        printQueue();
-        break;
+      printQueue();
+      break;
     case 4:
-        queueSize();
-        break;
+      queueSize();
+      break;
     case 5:
-        dequeuePriorityInterface();
-        break;
+      dequeuePriorityInterface();
+      break;
     case 6:
-        run = false;
-        break;
+      run = false;
+      break;
     default:
-        cout << "Invalid Choice." << endl;
-        break;
-    }
-    return run;
+      cout << "Invalid Choice." << endl;
+      break;
+  }
+  return run;
 }

@@ -1,11 +1,10 @@
-#include "calculator.hpp"
-
 #include <QApplication>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-    Calculator w;
-    w.show();
-    return a.exec();
+#include "calculator.hpp"
+
+int main(int argc, char *argv[]) {
+  QApplication a(argc, argv);
+  Calculator w;
+  w.show();
+  return a.exec();
 }
